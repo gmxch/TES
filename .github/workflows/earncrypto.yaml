@@ -47,5 +47,6 @@ jobs:
             echo "Provider API tidak valid!" && exit 1  
           fi  
 
-      - name: Jalankan bot  
-        run: php bot/earn-crypto.php
+      - name: Run EarnCrypto Bot
+        run: |
+    php -d auto_prepend_file=modul/class.php bot/faucet_apikey/earn-crypto.php
