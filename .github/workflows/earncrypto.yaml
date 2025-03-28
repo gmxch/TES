@@ -1,7 +1,7 @@
 name: Run EarnCrypto Bot
 
 on:
-  workflow_dispatch:  # Hanya bisa dijalankan manual
+  workflow_dispatch:
 
 jobs:
   run-bot:
@@ -25,11 +25,12 @@ jobs:
 
       - name: Buat file apikey.json
         run: |
-          echo '[
+          cat <<EOF > data/apikey.json
+          [
             {
-              "provider": "xeviI",
+              "provider": "xevil",
               "url": "https://sctg.xyz/",
-              "register": "t.me/Xevil_check_bot?start=1204538927",
+              "register": "https://t.me/Xevil_check_bot?start=1204538927",
               "apikey": "${{ secrets.XEVIL_APIKEY }}"
             },
             {
@@ -38,7 +39,8 @@ jobs:
               "register": "http://api.multibot.in/",
               "apikey": "${{ secrets.MULTIBOT_APIKEY }}"
             }
-          ]' > data/apikey.json
+          ]
+          EOF
 
       - name: Jalankan bot
         run: php bot/earn-crypto.php
