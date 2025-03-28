@@ -18,10 +18,27 @@ jobs:
       - name: Buat folder data/earn-crypto
         run: mkdir -p data/earn-crypto
 
-      - name: Buat file cookie dan user_agent
+      - name: Buat file data
         run: |
           echo "${{ secrets.COOKIE }}" > data/earn-crypto/cookie
           echo "${{ secrets.USER_AGENT }}" > data/earn-crypto/user_agent
+
+      - name: Buat file apikey.json
+        run: |
+          echo '[
+            {
+              "provider": "xeviI",
+              "url": "https://sctg.xyz/",
+              "register": "t.me/Xevil_check_bot?start=1204538927",
+              "apikey": "${{ secrets.XEVIL_APIKEY }}"
+            },
+            {
+              "provider": "multibot",
+              "url": "http://api.multibot.in/",
+              "register": "http://api.multibot.in/",
+              "apikey": "${{ secrets.MULTIBOT_APIKEY }}"
+            }
+          ]' > data/apikey.json
 
       - name: Jalankan bot
         run: php bot/earn-crypto.php
