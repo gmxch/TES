@@ -15,10 +15,10 @@ jobs:
         with:
           php-version: '8.0'
           
-      - name: Create cookie.txt
+      - name: Create cookie
         run: |
           mkdir -p data/teaserfast
-          echo ${{ secrets.TEASERFAST }} > data/teaserfast/cookie.txt
+          echo ${{ secrets.TEASERFAST }} > data/teaserfast/cookie
           
       - name: Create Apikey.json
         run: |
@@ -45,6 +45,8 @@ jobs:
           echo "API=0" >> $GITHUB_ENV
           echo "PIL_VALUE=4" >> $GITHUB_ENV
           echo "PIL2_VALUE=0" >> $GITHUB_ENV
+          echo "XEVIL=${{ secrets.XEVIL }}" $GITHUB_ENV
+          echo "MULTIBOT=${{ secrets.MULTIBOT }}" $GITHUB_ENV
           echo "TEASERFAST=${{ secrets.TEASERFAST }}" >> $GITHUB_ENV
           
       - name: Run TeaserFast
