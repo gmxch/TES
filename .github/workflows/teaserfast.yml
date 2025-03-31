@@ -1,25 +1,56 @@
-name: My Workflow
+name: TEASERFAST
 
-on:  
+on:
   workflow_dispatch:
-jobs:  
-  run-bot:  
-    runs-on: ubuntu-latest  
-    steps:  
-      - name: Checkout repository  
-        uses: actions/checkout@v3  
 
-      - name: Setup PHP  
-        uses: shivammathur/setup-php@v2  
-        with:  
-          php-version: '8.0'  
-    env:
-      PIL_VALUE: 4  
-      PIL2_VALUE: 0 
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          
+      - name: Create cookie.txt
+        run: |
+          mkdir -p data/teaserfast
+          echo ${{ secrets.TEASERFAST }} > data/teaserfast/cookie.txt
+          
+      - name: Create Apikey.json
+        run: |
+          mkdir -p data
+          cat << EOF > data/Apikey.json
+          [
+            {
+              "provider": "xevil",
+              "url": "https:\/\/sctg.xyz\/",
+              "register": "t.me\/Xevil_check_bot",
+              "apikey": ""
+            },
+            {
+              "provider": "multibot",
+              "url": "http:\/\/api.multibot.in\/",
+              "register": "http:\/\/api.multibot.in",
+              "apikey": ""
+            }
+          ]
+          EOF
+          
+      - name: Set environment variables
+        run: |
+          echo "API=0" >> $GITHUB_ENV
+          echo "PIL_VALUE=4" >> $GITHUB_ENV
+          echo "PIL2_VALUE=0" >> $GITHUB_ENV
+          echo "TEASERFAST=${{ secrets.TEASERFAST }}" >> $GITHUB_ENV
+          
       - name: Run TeaserFast
-        run: php 1.php
-
+        run: |
+          php run.php
+          if [ $? -ne 0 ]; then
+            echo "FAILED"
+            exit 1
+          fi
