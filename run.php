@@ -1,5 +1,5 @@
 <?php
-if ($argv[1] !== "error") {
+if (isset($argv[1]) && $argv[1] !== "error") {
     error_reporting(0);
 }
 require "modul/class.php";
