@@ -234,7 +234,7 @@ static function cofigApikey() {
     while (time() < $endTime){
         $remainingTime = $endTime - time();
         echo "Waktu tersisa: " . gmdate("H:i:s", $remainingTime) . "\r";
-        sleep(3);}
+        sleep(1);}
     echo "Waktu habis!\n";
 	}
 	static function view(){
