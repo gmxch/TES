@@ -209,17 +209,13 @@ static function cofigApikey() {
     Display::Line();
 
     // Akses API key dari Secrets GitHub (menggunakan objek Secrets)
-    if (isset($providers[$type])) {
-        $secret_name = $providers[$type]["secret_name"];
-        $apikey[$type]["apikey"] = $_ENV["{$secret_name}"]; //Cara ini lebih tepat di github actions
-
-        // Jika secret tidak ditemukan, lemparkan exception
-        if ($apikey[$type]["apikey"] === false) {
-            throw new Exception("Error: Secrets GitHub '$secret_name' tidak ditemukan.");
-        }
+    if (isset($_ENV[$secret_name])) {
+        $apikey[$type]["apikey"] = $_ENV[$secret_name];
     } else {
-        Display::Cetak("Error", "Tipe penyedia tidak valid");
-        return false;
+        // Tampilkan pesan kesalahan yang lebih informatif
+        echo "Error: Secrets GitHub '$secret_name' tidak ditemukan.\n";
+        // Atau gunakan API key default:
+         $apikey[$type]["apikey"] = "(int)getenv('XEVIL')"; 
     }
 
     return $apikey[$type];
