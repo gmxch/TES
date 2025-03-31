@@ -5,9 +5,8 @@ if ($argv[1] !== "error") {
 require "modul/class.php";
 Display::Banner_menu();
 
-// Tentukan bot dan fungsi yang akan dijalankan (sebaiknya gunakan argumen baris perintah atau konfigurasi)
-$pil = isset($argv[2]) ? (int)$argv[2] : 4; // Gunakan argumen baris perintah jika ada
-$pil2 = isset($argv[3]) ? (int)$argv[3] : 0; // Gunakan argumen baris perintah jika ada
+$pil = isset($argv[2]) ? (int)$argv[2] : (int)getenv('PIL_VALUE');
+$pil2 = isset($argv[3]) ? (int)$argv[3] : (int)getenv('PIL2_VALUE');
 
 
 // Kode menu utama (tidak dijalankan, hanya untuk referensi)
