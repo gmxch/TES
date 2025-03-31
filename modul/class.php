@@ -177,47 +177,52 @@ class Functions {
 		}
 		return $data;
 	}
-	static function cofigApikey() {
-  $configFile = "data/Apikey.json";
-  Display::Title("Select Apikey");
+static function cofigApikey() {
+    $configFile = "data/Apikey.json";
+    Display::Title("Pilih Apikey");
 
-  // Inisialisasi array provider
-  $providers = [
-    0 => ["provider" => "xevil", "secret_name" => "XEVIL"],
-    1 => ["provider" => "multibot", "secret_name" => "MULTIBOT"],
-  ];
-
-  // Load API key dari file JSON jika ada
-  if (file_exists($configFile)) {
-    $apikey = json_decode(file_get_contents($configFile), 1);
-  } else {
-    // Inisialisasi dengan data default (tanpa API key)
-    $apikey = [
-      ["provider" => "xevil", "url" => "https://sctg.xyz/", "register" => "t.me/Xevil_check_bot", "apikey" => ""],
-      ["provider" => "multibot", "url" => "http://api.multibot.in/", "register" => "", "apikey" => ""],
+    // Inisialisasi array penyedia
+    $providers = [
+        0 => ["provider" => "xevil", "secret_name" => "XEVIL"],
+        1 => ["provider" => "multibot", "secret_name" => "MULTIBOT"],
     ];
-  }
-  // Tampilkan menu pilihan API key
-  foreach ($apikey as $no => $api) {
-    $cek = ($api["apikey"]) ? "✓" : "?";
-    Display::Menu($no, $api["provider"]." [$cek]");
-  }
-  print Display::isi("Number");
-  $type = (int)getenv('API');
-  Display::Line();
-  // Ambil API key dari Secrets GitHub
-  if (isset($providers[$type])) {
-    $secret_name = $providers[$type]["secret_name"];
-    $apikey[$type]["apikey"] = getenv($secret_name);
-    // Jika Secrets tidak ditemukan, lemparkan exception
-    if ($apikey[$type]["apikey"] === false) {
-      throw new Exception("Error: Secrets GitHub '$secret_name' tidak ditemukan.");
+
+    // Muat API key dari file JSON jika ada
+    if (file_exists($configFile)) {
+        $apikey = json_decode(file_get_contents($configFile), 1);
+    } else {
+        // Inisialisasi dengan data default (tanpa API key)
+        $apikey = [
+            ["provider" => "xevil", "url" => "", "register" => "t.me/Xevil_check_bot", "apikey" => ""],
+            ["provider" => "multibot", "url" => "", "register" => "", "apikey" => ""],
+        ];
     }
-  } else {
-    Display::Cetak("Error", "Invalid provider type");
-    return false; 
-  }
-  return $apikey[$type];
+
+    // Tampilkan menu pilihan API key
+    foreach ($apikey as $no => $api) {
+        $cek = ($api["apikey"]) ? "✓" : "?";
+        Display::Menu($no, $api["provider"]." [$cek]");
+    }
+
+    print Display::isi("Nomor");
+    $type = (int)getenv('API');
+    Display::Line();
+
+    // Akses API key dari Secrets GitHub (menggunakan objek Secrets)
+    if (isset($providers[$type])) {
+        $secret_name = $providers[$type]["secret_name"];
+        $apikey[$type]["apikey"] = $_ENV["{$secret_name}"]; //Cara ini lebih tepat di github actions
+
+        // Jika secret tidak ditemukan, lemparkan exception
+        if ($apikey[$type]["apikey"] === false) {
+            throw new Exception("Error: Secrets GitHub '$secret_name' tidak ditemukan.");
+        }
+    } else {
+        Display::Cetak("Error", "Tipe penyedia tidak valid");
+        return false;
+    }
+
+    return $apikey[$type];
 }
 	static function removeConfig($nama_data){
 		unlink(self::$configFile."/".$nama_data);
