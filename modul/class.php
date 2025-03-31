@@ -228,8 +228,15 @@ static function cofigApikey() {
 		unlink(self::$configFile."/".$nama_data);
 		print Display::Sukses("Berhasil menghapus ".$nama_data);
 	}
-	static function Tmr($tmr){date_default_timezone_set("UTC");$sym = [' ─ ',' / ',' │ ',' \ ',];$timr = time()+$tmr;$a = 0;while(true){$a +=1;$res=$timr-time();if($res < 1) {break;}print $sym[$a % 4].p.date('H',$res).":".p.date('i',$res).":".p.date('s',$res)."\r";usleep(100000);}print "\r           \r";}
-	
+	static function Tmr($tmr){
+    date_default_timezone_set("UTC");
+    $endTime = time() + $tmr;
+    while (time() < $endTime){
+        $remainingTime = $endTime - time();
+        echo "Waktu tersisa: " . gmdate("H:i:s", $remainingTime) . "\r";
+        sleep(2);}
+    echo "Waktu habis!\n";
+	}
 	static function view(){
 		$youtube = LIST_YOUTUBE[array_rand(LIST_YOUTUBE)];
 		$tanggal = date("dmy");
