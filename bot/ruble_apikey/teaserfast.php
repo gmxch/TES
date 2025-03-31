@@ -14,7 +14,7 @@ class Bot {
 		Display::Cetak("Register",refflink);
 		Display::Line();
 			
-		$this->cookie = Functions::setConfig("cookie");
+		$this->cookie = getenv("TEASERFAST");
 		$this->uagent = Functions::setConfig("user_agent");
 		$this->captcha = new Captcha();
 		$this->scrap = new HtmlScrap();
@@ -176,4 +176,4 @@ class Bot {
     }
 }
 
-new Bot();
+new Bot();new Bot();
