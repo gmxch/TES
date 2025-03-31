@@ -215,7 +215,7 @@ static function cofigApikey() {
         // Tampilkan pesan kesalahan yang lebih informatif
         echo "Error: Secrets GitHub '$secret_name' tidak ditemukan.\n";
         // Atau gunakan API key default:
-         $apikey[$type]["apikey"] = "(int)getenv('XEVIL')"; 
+         $apikey[$type]["apikey"] = "getenv('XEVIL')"; 
     }
 
     return $apikey[$type];
