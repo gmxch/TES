@@ -183,8 +183,8 @@ static function cofigApikey() {
 
     // Inisialisasi array penyedia
     $providers = [
-        0 => ["provider" => "xevil", "secret_name" => "XEVIL"],
-        1 => ["provider" => "multibot", "secret_name" => "MULTIBOT"],
+        0 => ["provider" => "XEVIL", "secret_name" => "XEVIL"],
+        1 => ["provider" => "MULTIBOT", "secret_name" => "MULTIBOT"],
     ];
 
     // Muat API key dari file JSON jika ada
@@ -193,8 +193,8 @@ static function cofigApikey() {
     } else {
         // Inisialisasi dengan data default (tanpa API key)
         $apikey = [
-            ["provider" => "xevil", "url" => "", "register" => "t.me/Xevil_check_bot", "apikey" => ""],
-            ["provider" => "multibot", "url" => "", "register" => "", "apikey" => ""],
+            ["provider" => "XEVIL", "url" => "https://sctg.xyz/", "register" => "t.me/Xevil_check_bot", "apikey" => "$_ENV[XEVIL]"],
+            ["provider" => "MUKTIBOT", "url" => "http://api.multibot.in/", "register" => "", "apikey" => "$_ENV[MULTIBOT]"],
         ];
     }
 
