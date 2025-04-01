@@ -1,4 +1,4 @@
-name: TEASERFAST
+name: BITFAUCET
 
 on:
   workflow_dispatch:
@@ -28,8 +28,8 @@ jobs:
 
       - name: Create cookie
         run: |
-          mkdir -p data/teaserfast
-          echo "${{ secrets.BITFAUCET }}" > data/teaserfast/cookie || echo "Error creating cookie file" >&2
+          mkdir -p data/bitfaucet
+          echo "${{ secrets.BITFAUCET }}" > data/bitfaucet/cookie || echo "Error creating cookie file" >&2
 
       - name: Create Apikey.json
         run: |
