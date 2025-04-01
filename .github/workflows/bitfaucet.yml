@@ -1,0 +1,60 @@
+name: TEASERFAST
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Set environment variables
+        run: |
+          echo "API=0" >> $GITHUB_ENV
+          echo "PIL_VALUE=2" >> $GITHUB_ENV
+          echo "PIL2_VALUE=0" >> $GITHUB_ENV
+          echo "XEVIL=${{ secrets.XEVIL }}" >> $GITHUB_ENV
+          echo "MULTIBOT=${{ secrets.MULTIBOT }}" >> $GITHUB_ENV
+          echo "API_XEVIL=${{ secrets.XEVIL }}" >> $GITHUB_ENV
+          echo "API_MULTI=${{ secrets.MULTIBOT }}" >> $GITHUB_ENV
+          echo "BITFAUCET=${{ secrets.BITFAUCET }}" >> $GITHUB_ENV
+
+      - name: Create cookie
+        run: |
+          mkdir -p data/teaserfast
+          echo "${{ secrets.BITFAUCET }}" > data/teaserfast/cookie || echo "Error creating cookie file" >&2
+
+      - name: Create Apikey.json
+        run: |
+          mkdir -p data
+          cat << EOF > data/Apikey.json || echo "Error creating Apikey.json" >&2
+          [
+            {
+              "provider": "xevil",
+              "url": "https://sctg.xyz/",
+              "register": "t.me/XEVIL_check_bot",
+              "apikey": "${{ secrets.XEVIL }}"
+            },
+            {
+              "provider": "multibot",
+              "url": "http://api.multibot.in/",
+              "register": "http://api.multibot.in",
+              "apikey": "${{ secrets.MULTIBOT }}"
+            }
+          ]
+          EOF
+
+      - name: Run TeaserFast
+        run: |
+          php run.php
+          if [ $? -ne 0 ]; then
+            echo "FAILED"
+            exit 1
+          fi
