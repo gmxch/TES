@@ -183,15 +183,15 @@ static function cofigApikey() {
 
     // Inisialisasi array penyedia
 $provider = [
-  0 => ["provider" => "xevil", "secret_name" => "XEVIL"],
-  1 => ["provider" => "multibot", "secret_name" => "MULTIBOT"],
+    0 => ["provider" => "xevil", "secret_name" => "XEVIL"],
+    1 => ["provider" => "multibot", "secret_name" => "MULTIBOT"],
 ];
 
 // Muat API key dari file JSON jika ada
 if (file_exists($configFile)) {
-  $apikey = json_decode(file_get_contents($configFile), 1);
+    $apikey = json_decode(file_get_contents($configFile), 1);
 } else {
-  $apikey = [
+    $apikey = [
     ["provider" => "xevil", "url" => "https://sctg.xyz/", "register" => "t.me/Xevil_check_bot", "apikey" => "$_ENV('API_XEVIL')"],
     ["provider" => "multibot", "url" => "http://api.multibot.in/", "register" => "api.multibot.in", "apikey" => "$_ENV('API_MULTI')"],
   ];
@@ -199,23 +199,31 @@ if (file_exists($configFile)) {
 
 // Tampilkan menu pilihan API key
 foreach ($apikey as $no => $api) {
-  $cek = ($api["apikey"]) ? "✓" : "?";
-  Display::Menu($no, $api["provider"]." [$cek]");
+    $cek = ($api["apikey"]) ? "✓" : "?";
+    Display::Menu($no, $api["provider"]." [$cek]");
 }
 
 print Display::isi("Nomor");
-$type = (int)getenv('API');
+$selectedProviderIndex = (int)getenv('API');
 Display::Line();
 
-// Akses API key dari Secrets GitHub (menggunakan objek Secrets)
-$secret_name = $provider[$type]['secret_name']; 
+// Validasi input provider
+if (!isset($provider[$selectedProviderIndex])) {
+    echo "Error: Provider yang dipilih tidak valid.\n";
+    exit;
+}
+
+// Akses API key dari Secrets GitHub
+$secret_name = $provider[$selectedProviderIndex]['secret_name'];
 if (isset($_ENV[$secret_name])) {
-  $apikey[$type]["apikey"] = $_ENV[$secret_name];
+    $apikey[$selectedProviderIndex]["apikey"] = $_ENV[$secret_name];
 } else {
-  // Tampilkan pesan kesalahan yang lebih informatif
-  echo "Error: Secrets GitHub '$secret_name' tidak ditemukan.\n";
-  // Atau gunakan API key default: 
-  $apikey[$type]["apikey"] = getenv("API_XEVIL"); }
+    // Tampilkan pesan kesalahan yang lebih informatif
+    echo "Error: Secrets GitHub '$secret_name' tidak ditemukan.\n";
+    // Gunakan API key default berdasarkan provider yang dipilih
+    $defaultApikey = ($selectedProviderIndex == 0) ? 'getenv("API_XEVIL")' : 'getenv("API_MULTI")'; 
+    $apikey[$selectedProviderIndex]["apikey"] = $defaultApikey; 
+}
     return $apikey[$type];
 }
 	static function removeConfig($nama_data){
