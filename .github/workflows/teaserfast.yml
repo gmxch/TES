@@ -22,6 +22,8 @@ jobs:
           echo "PIL2_VALUE=0" >> $GITHUB_ENV
           echo "XEVIL=${{ secrets.XEVIL }}" >> $GITHUB_ENV
           echo "MULTIBOT=${{ secrets.MULTIBOT }}" >> $GITHUB_ENV
+          echo "API_XEVIL=${{ secrets.XEVIL }}" >> $GITHUB_ENV
+          echo "API_MULTI=${{ secrets.MULTIBOT }}" >> $GITHUB_ENV
           echo "TEASERFAST=${{ secrets.TEASERFAST }}" >> $GITHUB_ENV
 
       - name: Create cookie
